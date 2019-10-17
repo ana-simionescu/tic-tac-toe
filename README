@@ -1,0 +1,63 @@
+Copyright 2018 Simionescu Ana-Maria
+
+	In tabela de joc, o matrice de caractere am codificat spatiile libere 
+cu caracterul '-', spatiile ocupate de jucatorul X cu 'X', iar cele ocupate
+de jucatorul 0 cu '0'.
+	In variabila turn retin randul jucatorului (1 pentru X, 0 pentru 0). In
+cadrul functiilor o voi actualiza cu ajutorului pointerului *p_turn.
+
+	#Functia int mutare_valida(int n, char nume, int x, int y, char a[101][101],
+                                             int *p_turn);
+
+    Verific pe rand erorile posibile si returnez un cod diferit pentru fiecare
+tip de eroare (1 pentru index invalid, 2 pentru celula ocupata, respectiv 3 
+pentru necorespondenta randului cu jucatorul care incearca sa faca mutarea).
+Returnez 0 pentru mutare valida.
+
+	#Functia int verificare_castig(char nume, int x, int y, int n, 
+											char a[101][101]);
+
+	Dupa fiecare atribuire verific daca in microbordul corespunzator s-a obtinut
+un castigator. Voi face verificarea doar pentru jucatorul al carui rand tocmai 
+s-a finalizat. Pentru a parcurge microbordul determin coordonatele coltului din 
+stanga sus. Coordonatele in care s-a facut atribuirea le transmit ca parametru
+si calculez linia de inceput dupa formula l = (x/n) * n, iar coloana dupa 
+formula c = (y/n) * n. 
+	Verific fiecare linie, coloana, diagonala principala si pe cea secundara 
+prentru a vedea daca contin doar caracterul jucatorului pe care il primesc ca
+parametru. In momentul in care gasesc o linie/coloana/diagonala completa, 
+returnez 1, altfel la final returnez 0, semn ca nu avem inca un castigator.
+	Apelez aceasta functie dupa fiecare atribuire pentru a gasi PRIMUL
+castigator.
+
+	#Functia void atribuire_automata(char a[101][101], int *p_turn, int n,
+                            char macro[101][101]);
+
+    In cazul unei erori, aceasta functie va distribui automat o celula
+jucatorului la rand. Tot in cadrul ei decid daca tabla de joc este plina.
+Parcurg tabela de joc pe diagonale. Daca gasesc o celula libera, se face
+atribuirea si se verifica daca s-a obtinut un castigator in microboardul 
+corespunzator. Daca nu s-a gasit o celula libera se afiseaza eroarea "FULL
+BOARD", iar cu ajutorul pointerului *p_turn valoarea variabilei care retine
+randul jucatorilor devine -1 pentru a nu mai continua jocul.
+
+	#Functia void atribuire(char nume, int x, int y, char a[101][101], int n,
+                            char macro[101][101], double coef[2][2]);
+
+    Daca o mutare nu are erori atunci se va realiza atribuirea caracterului
+corespunzator in microboard si se verifica obtinerea unui castigator.
+Daca s-a gasit castigatorul, numarul mutarilor sale castigatoare creste.
+
+	#Functia void mutare(int n, char a[101][101], int *p_turn, 
+							char macro[101][101], double coef[2][2]) {
+
+	In aceasta functie se citesc mutarile si se urmeaza instructiunile pentru 
+fiecare tip de eroare. Se apeleaza functia de atribuire automata in cazul
+erorilor de index invalid sau celula ocupata, si functia de atribuire pentru
+o mutare valida, si se incrementeaza numarul total al mutarilor pentru
+jucatorul la rand.
+
+	#Functia void initializare_matrice(char a[101][101], int n);
+
+	Se initializeaza microboard-urile si macroboardul cu caracterul '-', pentru
+a marca faptul ca toate celulele sunt goale.
